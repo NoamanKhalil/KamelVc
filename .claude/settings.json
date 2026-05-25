@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /Users/noamankhalil/KamelVc -type f \\\\\\( -iname \"*.png\" -o -iname \"*.jpg\" -o -iname \"*.jpeg\" -o -iname \"*.svg\" -o -iname \"*.webp\" \\\\\\) 2>/dev/null)",
+      "Read(//Users/noamankhalil/KamelVc/**)",
+      "Bash(find /Users/noamankhalil/Desktop /Users/noamankhalil/Downloads -maxdepth 3 -type f \\\\\\( -iname \"*kamel*\" -o -iname \"*camel*\" \\\\\\) 2>/dev/null | head -20)",
+      "Read(//Users/noamankhalil/Desktop/**)",
+      "Bash(find /Users/noamankhalil -maxdepth 5 -type f \\\\\\( -iname \"*.png\" -o -iname \"*.svg\" -o -iname \"*.jpg\" \\\\\\) 2>/dev/null | grep -iv \"library\\\\|cache\\\\|trash\\\\|node_modules\\\\|\\\\.git\" | head -30)",
+      "Read(//Users/noamankhalil/**)",
+      "Bash(git -C /Users/noamankhalil/KamelVc/KamelVc status)",
+      "Bash(git -C /Users/noamankhalil/KamelVc/KamelVc log --oneline -5)",
+      "Bash(git -C /Users/noamankhalil/KamelVc/KamelVc add .gitignore .htaccess admin.php camel.png index.html schema.sql submit.php)",
+      "Bash(git -C /Users/noamankhalil/KamelVc/KamelVc commit -m ' *)"
+    ]
+  }
+}

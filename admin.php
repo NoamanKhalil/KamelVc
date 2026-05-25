@@ -138,20 +138,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
 
 // ── CSV export ────────────────────────────────────────────────────────────────
 if (isset($_GET['export'])) {
-    $rows = $pdo->query('SELECT first_name, last_name, email, role, created_at FROM signups ORDER BY created_at DESC')->fetchAll();
+    $rows = $pdo->query('SELECT first_name, last_name, email, role, amount, created_at FROM signups ORDER BY created_at DESC')->fetchAll();
     header('Content-Type: text/csv; charset=UTF-8');
     header('Content-Disposition: attachment; filename="kamel-signups-' . date('Y-m-d') . '.csv"');
     $f = fopen('php://output', 'w');
-    fputcsv($f, ['First Name', 'Last Name', 'Email', 'Role', 'Signed Up']);
+    fputcsv($f, ['First Name', 'Last Name', 'Email', 'Role', 'Amount (USD)', 'Signed Up']);
     foreach ($rows as $r) { fputcsv($f, $r); }
     fclose($f);
     exit;
 }
 
 // ── Fetch signups + stats ─────────────────────────────────────────────────────
-$signups = $pdo->query('SELECT * FROM signups ORDER BY created_at DESC')->fetchAll();
-$total   = count($signups);
-$by_role = ['investor' => 0, 'founder' => 0, 'mentor' => 0, 'other' => 0, '' => 0];
+$signups  = $pdo->query('SELECT * FROM signups ORDER BY created_at DESC')->fetchAll();
+$total    = count($signups);
+$pledged  = array_sum(array_column($signups, 'amount'));
+$by_role  = ['investor' => 0, 'founder' => 0, 'mentor' => 0, 'other' => 0, '' => 0];
 foreach ($signups as $s) { $by_role[$s['role'] ?? '']++; }
 
 $role_labels = [
@@ -200,7 +201,7 @@ function role_badge(string $role): string {
   .main{max-width:1100px;margin:0 auto;padding:32px 24px}
 
   /* Stats */
-  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:28px}
+  .stats{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:28px}
   .stat{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px 20px}
   .stat-val{font-size:28px;font-weight:700;line-height:1;margin-bottom:4px}
   .stat-label{font-size:12px;color:#6b7280;font-weight:500}
@@ -279,6 +280,10 @@ function role_badge(string $role): string {
       <div class="stat-val" style="color:#6b7280"><?= $by_role['other'] + $by_role[''] ?></div>
       <div class="stat-label">Other / unspecified</div>
     </div>
+    <div class="stat">
+      <div class="stat-val" style="color:#15803d;font-size:22px">$<?= number_format($pledged) ?></div>
+      <div class="stat-label">Total pledged</div>
+    </div>
   </div>
 
   <!-- TABLE -->
@@ -301,6 +306,7 @@ function role_badge(string $role): string {
           <th>Name</th>
           <th>Email</th>
           <th>Role</th>
+          <th>Amount</th>
           <th>Signed Up</th>
           <th></th>
         </tr>
@@ -312,6 +318,9 @@ function role_badge(string $role): string {
           <td class="name"><?= htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) ?></td>
           <td class="email"><a href="mailto:<?= htmlspecialchars($row['email']) ?>"><?= htmlspecialchars($row['email']) ?></a></td>
           <td><?= role_badge($row['role'] ?? '') ?></td>
+          <td style="font-weight:500;color:<?= $row['amount'] ? '#15803d' : '#d1d5db' ?>">
+            <?= $row['amount'] ? '$' . number_format((int)$row['amount']) : '—' ?>
+          </td>
           <td class="date"><?= date('M j, Y · g:ia', strtotime($row['created_at'])) ?></td>
           <td>
             <form method="POST" onsubmit="return confirm('Remove <?= htmlspecialchars(addslashes($row['first_name'])) ?> from the list?')">

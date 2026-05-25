@@ -17,6 +17,8 @@ $first_name = san($_POST['first_name'] ?? '');
 $last_name  = san($_POST['last_name']  ?? '');
 $email      = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
 $role       = san($_POST['role']       ?? '');
+$amount     = filter_var($_POST['amount'] ?? '', FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+$amount     = $amount !== false ? (int) $amount : null;
 
 if (!$first_name || !$last_name || !$email) {
     echo json_encode(['success' => false, 'message' => 'Please fill in all required fields.']);
@@ -52,8 +54,8 @@ try {
         exit;
     }
 
-    $pdo->prepare('INSERT INTO signups (first_name, last_name, email, role, ip_address) VALUES (?, ?, ?, ?, ?)')
-        ->execute([$first_name, $last_name, $email, $role, $_SERVER['REMOTE_ADDR'] ?? '']);
+    $pdo->prepare('INSERT INTO signups (first_name, last_name, email, role, amount, ip_address) VALUES (?, ?, ?, ?, ?, ?)')
+        ->execute([$first_name, $last_name, $email, $role, $amount, $_SERVER['REMOTE_ADDR'] ?? '']);
 
     send_confirmation($email, $first_name);
 

@@ -110,6 +110,38 @@
       cursor: pointer;
     }
 
+    .input-prefix-wrap {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color .18s, box-shadow .18s;
+    }
+    .input-prefix-wrap:focus-within {
+      border-color: #111;
+      box-shadow: 0 0 0 3px rgba(0,0,0,.06);
+    }
+    .input-prefix {
+      padding: 10px 12px;
+      background: #f9fafb;
+      color: #6b7280;
+      font-size: 14px;
+      font-weight: 500;
+      border-right: 1.5px solid #e5e7eb;
+      user-select: none;
+    }
+    .input-prefix-wrap input {
+      border: none !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      flex: 1;
+    }
+    /* hide browser number spinners */
+    .input-prefix-wrap input::-webkit-outer-spin-button,
+    .input-prefix-wrap input::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .input-prefix-wrap input[type=number] { -moz-appearance: textfield; }
+
     .check-row {
       display: flex;
       align-items: flex-start;
@@ -236,6 +268,14 @@
           <option value="mentor">Mentor / Advisor</option>
           <option value="other">Just curious</option>
         </select>
+      </div>
+
+      <div class="field">
+        <label for="amount">How much are you looking to contribute? (USD)</label>
+        <div class="input-prefix-wrap">
+          <span class="input-prefix">$</span>
+          <input id="amount" name="amount" type="number" min="1" step="1" placeholder="e.g. 500" />
+        </div>
       </div>
 
       <div class="check-row">
