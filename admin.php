@@ -56,7 +56,7 @@ if (!defined('ADMIN_PASSWORD_HASH') || ADMIN_PASSWORD_HASH === '') {
 // ── Logout ────────────────────────────────────────────────────────────────────
 if (isset($_GET['logout'])) {
     session_destroy();
-    header('Location: admin.php');
+    header('Location: admin.html');
     exit;
 }
 
@@ -67,7 +67,6 @@ if (empty($_SESSION['csrf'])) {
 $csrf = $_SESSION['csrf'];
 
 // ── Login ─────────────────────────────────────────────────────────────────────
-$login_error = '';
 if (empty($_SESSION['kv_admin'])) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'])) {
         if (password_verify($_POST['password'], ADMIN_PASSWORD_HASH)) {
@@ -76,44 +75,10 @@ if (empty($_SESSION['kv_admin'])) {
             header('Location: admin.php');
             exit;
         }
-        $login_error = 'Incorrect password.';
+        header('Location: admin.html?error=1');
+        exit;
     }
-    ?><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Admin Login — Kamel Ventures</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
-<style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Inter',sans-serif;background:#f9fafb;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
-  .card{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:40px 36px;max-width:380px;width:100%;text-align:center}
-  img{width:120px;height:auto;margin:0 auto 24px;display:block}
-  h2{font-size:18px;font-weight:600;margin-bottom:6px}
-  .sub{font-size:13px;color:#9ca3af;margin-bottom:28px}
-  label{display:block;text-align:left;font-size:12px;font-weight:600;color:#374151;margin-bottom:6px}
-  input{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:14px;font-family:inherit;outline:none;margin-bottom:14px;text-align:left}
-  input:focus{border-color:#111;box-shadow:0 0 0 3px rgba(0,0,0,.06)}
-  button{width:100%;padding:12px;background:#111;color:#fff;font-size:14px;font-weight:600;font-family:inherit;border:none;border-radius:8px;cursor:pointer;transition:opacity .15s}
-  button:hover{opacity:.85}
-  .err{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:16px}
-</style>
-</head>
-<body>
-<div class="card">
-  <img src="camel.png" alt="Kamel Ventures"/>
-  <h2>Admin Login</h2>
-  <p class="sub">Kamel Ventures · Signups Dashboard</p>
-  <?php if ($login_error): ?><div class="err"><?= htmlspecialchars($login_error) ?></div><?php endif; ?>
-  <form method="POST">
-    <label for="pw">Password</label>
-    <input id="pw" name="password" type="password" placeholder="Enter admin password" required autofocus/>
-    <button type="submit">Sign in</button>
-  </form>
-</div>
-</body>
-</html>
-<?php
+    header('Location: admin.html');
     exit;
 }
 
