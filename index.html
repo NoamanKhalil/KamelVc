@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kamel Ventures</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    /* ── LOGO ── */
+    .logo-wrap { width: 100%; max-width: 300px; }
+    .logo-wrap img { width: 100%; height: auto; display: block; }
+
+    /* ── TAGLINES ── */
+    .taglines { text-align: center; display: flex; flex-direction: column; gap: 8px; }
+    .tagline-mission {
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.55;
+      font-weight: 400;
+    }
+    .tagline-launch {
+      font-size: 12px;
+      font-weight: 500;
+      color: #9ca3af;
+      letter-spacing: .2px;
+      text-transform: uppercase;
+    }
+
+    /* ── FORM ── */
+    .card {
+      width: 100%;
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 36px 32px;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #111;
+    }
+
+    .card p.sub {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .field { margin-bottom: 16px; }
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 6px;
+      letter-spacing: .3px;
+    }
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #111;
+      background: #fff;
+      outline: none;
+      transition: border-color .18s, box-shadow .18s;
+    }
+    .field input:focus,
+    .field select:focus {
+      border-color: #111;
+      box-shadow: 0 0 0 3px rgba(0,0,0,.06);
+    }
+    .field select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 38px;
+      cursor: pointer;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .check-row input[type="checkbox"] {
+      width: 16px; height: 16px;
+      margin-top: 2px;
+      accent-color: #111;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .check-row label {
+      font-size: 12px;
+      color: #6b7280;
+      line-height: 1.5;
+      cursor: pointer;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 13px;
+      background: #111;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: opacity .18s, transform .18s;
+    }
+    .btn:hover  { opacity: .88; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+    .msg {
+      display: none;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 18px;
+    }
+    .msg.ok  { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+    .msg.err { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
+    /* ── SUCCESS STATE ── */
+    .success-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+      padding: 8px 0;
+    }
+    .success-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: #f0fdf4;
+      border: 2px solid #bbf7d0;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 4px;
+    }
+    .success-icon svg { width: 28px; height: 28px; }
+    .success-screen h2 { font-size: 20px; font-weight: 600; color: #111; }
+    .success-screen .success-name { font-size: 15px; color: #374151; line-height: 1.55; }
+    .success-screen .success-note {
+      font-size: 13px; color: #9ca3af; line-height: 1.55;
+      padding-top: 4px; border-top: 1px solid #f3f4f6; width: 100%;
+    }
+
+    @media (max-width: 480px) {
+      .card { padding: 28px 20px; }
+      .row  { grid-template-columns: 1fr; gap: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- LOGO -->
+  <div class="logo-wrap">
+    <img src="camel.png" alt="Kamel Ventures" />
+  </div>
+
+  <!-- TAGLINES -->
+  <div class="taglines">
+    <p class="tagline-mission">Non-profit VC with all money going into an endowment<br>to create a system of change</p>
+    <p class="tagline-launch">Launching January 2027 &middot; Pending non-profit status</p>
+  </div>
+
+  <!-- FORM -->
+  <div class="card">
+    <h2>Stay in the loop</h2>
+    <p class="sub">We're building a non-profit fund for responsible startups. Sign up and we'll reach out when we launch.</p>
+
+    <div class="msg" id="msg"></div>
+
+    <form id="form" novalidate>
+      <div class="row">
+        <div class="field">
+          <label for="fn">First name *</label>
+          <input id="fn" name="first_name" type="text" placeholder="Jane" required />
+        </div>
+        <div class="field">
+          <label for="ln">Last name *</label>
+          <input id="ln" name="last_name" type="text" placeholder="Smith" required />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="em">Email *</label>
+        <input id="em" name="email" type="email" placeholder="jane@example.com" required />
+      </div>
+
+      <div class="field">
+        <label for="role">I am interested as a…</label>
+        <select id="role" name="role">
+          <option value="">Select one (optional)</option>
+          <option value="investor">Investor / Fund contributor</option>
+          <option value="founder">Founder looking for funding</option>
+          <option value="mentor">Mentor / Advisor</option>
+          <option value="other">Just curious</option>
+        </select>
+      </div>
+
+      <div class="check-row">
+        <input type="checkbox" id="agree" name="agree" required />
+        <label for="agree">I agree to be contacted by Kamel Ventures about updates and opportunities.</label>
+      </div>
+
+      <button class="btn" type="submit" id="btn">Sign up</button>
+    </form>
+
+    <!-- SUCCESS SCREEN (hidden until signup) -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 13l4 4L19 7" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h2>You're on the list!</h2>
+      <p class="success-name" id="successName"></p>
+      <p class="success-note">
+        We'll be in touch as we approach our<br/>
+        <strong>January 2027 launch</strong>. Check your inbox for a confirmation email.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const form          = document.getElementById('form');
+  const btn           = document.getElementById('btn');
+  const msg           = document.getElementById('msg');
+  const successScreen = document.getElementById('successScreen');
+  const successName   = document.getElementById('successName');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msg.style.display = 'none';
+
+    const fn    = document.getElementById('fn').value.trim();
+    const ln    = document.getElementById('ln').value.trim();
+    const email = document.getElementById('em').value.trim();
+    const agree = document.getElementById('agree').checked;
+
+    if (!fn || !ln || !email) { showMsg('Please fill in your name and email.', 'err'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg('Please enter a valid email.', 'err'); return; }
+    if (!agree) { showMsg('Please accept the terms to continue.', 'err'); return; }
+
+    btn.disabled    = true;
+    btn.textContent = 'Signing up…';
+
+    try {
+      const res  = await fetch('submit.php', { method: 'POST', body: new FormData(form) });
+      const json = await res.json();
+      if (json.success) {
+        showSuccess(json.first_name || fn);
+      } else {
+        showMsg(json.message || 'Something went wrong — please try again.', 'err');
+        btn.disabled    = false;
+        btn.textContent = 'Sign up';
+      }
+    } catch {
+      showMsg('Could not reach the server. Email us at hello@kamelventures.org', 'err');
+      btn.disabled    = false;
+      btn.textContent = 'Sign up';
+    }
+  });
+
+  function showSuccess(firstName) {
+    // Hide form elements, show success screen
+    form.style.display          = 'none';
+    msg.style.display           = 'none';
+    document.querySelector('.card h2').style.display  = 'none';
+    document.querySelector('.card p.sub').style.display = 'none';
+
+    successName.textContent     = `Thanks for joining, ${firstName}! A confirmation email is on its way to you.`;
+    successScreen.style.display = 'flex';
+  }
+
+  function showMsg(text, type) {
+    msg.textContent   = text;
+    msg.className     = 'msg ' + type;
+    msg.style.display = 'block';
+  }
+</script>
+</body>
+</html>
