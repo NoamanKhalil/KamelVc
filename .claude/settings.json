@@ -10,7 +10,15 @@
       "Bash(git -C /Users/noamankhalil/KamelVc/KamelVc status)",
       "Bash(git -C /Users/noamankhalil/KamelVc/KamelVc log --oneline -5)",
       "Bash(git -C /Users/noamankhalil/KamelVc/KamelVc add .gitignore .htaccess admin.php camel.png index.html schema.sql submit.php)",
-      "Bash(git -C /Users/noamankhalil/KamelVc/KamelVc commit -m ' *)"
+      "Bash(git -C /Users/noamankhalil/KamelVc/KamelVc commit -m ' *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git check-ignore *)",
+      "Bash(git push *)",
+      "Bash(git fetch *)",
+      "Bash(git config *)",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/noamankhalil/KamelVc/KamelVc/camel.png)",
+      "Bash(sips --resampleWidth 600 /Users/noamankhalil/KamelVc/KamelVc/camel.png)"
     ]
   }
 }
